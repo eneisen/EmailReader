@@ -1,0 +1,191 @@
+<h1> EmailReader </h1>
+
+<form #emailForm="ngForm" (ngSubmit)="sendForm()">
+    <div class="form-group">
+        <label> From: </label>
+        <input appHighlight class="form-control" type="text" required [(ngModel)]="email.from" name="efrom" #efrom="ngModel"
+            [ngClass]="efrom.valid || efrom.pristine ? '': 'bg-danger'"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+        <div class="alert alert-danger" *ngIf="efrom.touched && !efrom.valid">
+            <div *ngIf="efrom.errors?.['required']">Email is required.</div>
+            <div *ngIf="efrom.errors?.['pattern']">Email does not match the required pattern.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label> To: </label>
+        <input appHighlight class="form-control" type="text" required [(ngModel)]="email.to" name="eto" #eto="ngModel"
+            [ngClass]="eto.valid || eto.pristine ? '': 'bg-danger'"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+        <div class="alert alert-danger" *ngIf="eto.touched && !eto.valid">
+            <div *ngIf="eto.errors?.['required']">Email is required.</div>
+            <div *ngIf="eto.errors?.['pattern']">Email does not match the required pattern.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label> Subject: </label>
+        <input appHighlight class="form-control" type="text" required minlength="10" maxlength="50" [(ngModel)]="email.subject" name="esubject" #esubject="ngModel"
+            [ngClass]="esubject.valid || esubject.pristine ? '': 'bg-danger'">
+
+        <div class="alert alert-danger" *ngIf="esubject.touched && !esubject.valid">
+            <div *ngIf="esubject.errors?.['required']">Subject is required.</div>
+            <div *ngIf="esubject.errors?.['minlength']">Subject is too short.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label> Body: </label>
+        <input appHighlight class="form-control" type="text" [(ngModel)]="email.body" name="ebody" #ebody="ngModel"
+            [ngClass]="ebody.valid || ebody.pristine ? '': 'bg-danger'">
+    </div>
+
+    <div class="text-right">
+        <button class="btn btn-primary btn-sm mr-1" type="submit" [disabled]="!emailForm.form.valid">Send</button>&nbsp;
+        <button class="btn btn-primary btn-sm mr-1" type="button" (click)="cleanForm()">Reset</button>
+
+    </div>
+
+</form>
+
+<h4> Form data: </h4>
+
+<br>
+<p >
+    ID: {{ email.id }} <br>
+    From: {{ email.from }} <br>
+    To: {{ email.to }} <br>
+    Subject: {{ email.subject }} <br>
+    Body: {{ email.body }}
+</p>
+
+<h4> List of emails: </h4>
+
+<h5> Filter emails: </h5>
+
+Text: <input type="text" class="form-control" [(ngModel)]="term">
+Only with body: <input type="checkbox" [(ngModel)]="withBody">
+<br>
+<br>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Body</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let email of emailsList | filter:term | withBodyFilter:withBody">
+            <td class="table-cell">{{email.id}}</td>
+            <td class="table-cell">{{email.from}}</td>
+            <td class="table-cell">{{email.to}}</td>
+            <td class="table-cell">{{email.subject}}</td>
+            <td class="table-cell">{{email.body}}</td>
+            <td>
+            <div class="text-right">
+                <button (click)="remove(email.id)" class="btn btn-primary btn-sm mr-1">Remove</button>
+            </div>
+        </tr>
+    </tbody>
+</table>
+
+<!-- <div>
+    <table *ngIf="emailsList.length > 0; else emptyList" class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Subject</th>
+          <th>Body</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let email of emailsList | filter:term | withBodyFilter:withBody">
+          <td class="table-cell">{{email.id}}</td>
+          <td class="table-cell">{{email.from}}</td>
+          <td class="table-cell">{{email.to}}</td>
+          <td class="table-cell">{{email.subject}}</td>
+          <td class="table-cell">{{email.body}}</td>
+          <td>
+            <button
+              class="btn btn-danger"
+              (click)="remove(email.id)"
+            >
+              X
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #emptyList>The list of emails is empty</ng-template>
+  </div> -->
+
+
+<!-- <div>
+    <table *ngIf="emailsList.length > 0; else emptyList" class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Subject</th>
+          <th>Body</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let email of emailsList | filter:term | withBodyFilter:withBody">
+          <td class="table-cell">{{email.id}}</td>
+          <td class="table-cell">{{email.from}}</td>
+          <td class="table-cell">{{email.to}}</td>
+          <td class="table-cell">{{email.subject}}</td>
+          <td class="table-cell">{{email.body}}</td>
+          <td>
+            <div class="text-right">
+                <button (click)="remove(email.id)" class="btn btn-primary btn-sm mr-1">Remove</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #emptyList>The list of emails is empty</ng-template>
+  </div> -->
+
+<!-- <table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Body</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let email of emailsList | filter:term | withBodyFilter:withBody">
+            <td class="table-cell">{{email.id}}</td>
+            <td class="table-cell">{{email.from}}</td>
+            <td class="table-cell">{{email.to}}</td>
+            <td class="table-cell">{{email.subject}}</td>
+            <td class="table-cell">{{email.body}}</td>
+            <td>
+            <div class="text-right">
+                <button (click)="remove(email.id)" class="btn btn-primary btn-sm mr-1">Remove</button>
+            </div>
+        </tr>
+    </tbody>
+</table> -->
+
+<!-- <div class="alert alert-dismissable" *ngIf="email">
+    <h3>We have the details of a email!! <br>
+        id:{{ email.id }} from:{{email.from}} to: {{ email.to }} 
+    </h3>
+    
+</div>
+
+<div class="alert alert-success alert-dismissable" *ngIf="message">
+    <h2> {{ message }} </h2>
+</div> -->

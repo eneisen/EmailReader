@@ -1,0 +1,40 @@
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<!-- <app-email-reader-basic></app-email-reader-basic>
+<app-email-reader-form></app-email-reader-form> -->
+
+
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<!-- <router-outlet></router-outlet> -->
+
+<div class="container">
+    <div class="jumbotron">
+        <h1> Programming of User Interfaces </h1>
+    </div>
+    <div class="row navbar">
+        <div class="col">
+            <div ngbDropdown class="d-inline-block">
+                <button class="btn btn-outline-primary mr-2" id="dropdownBasic1" ngbDropdownToggle>
+                    Assignments
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button ngbDropdownItem>
+                        <a routerLink="/emailreaderbasic">email-reader-basic</a>
+                    </button>
+                    <button ngbDropdownItem>
+                        <a routerLink="/emailreaderformcomponent">email-reader-form
+                            example</a>
+                    </button>
+                    <button ngbDropdownItem>
+                        <a routerLink="/emailreaderservice">email-reader-service
+                            example</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <router-outlet></router-outlet>
+
+</div>

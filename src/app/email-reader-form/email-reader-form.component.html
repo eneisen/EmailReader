@@ -1,0 +1,84 @@
+<h1> EmailReader </h1>
+
+<form #emailForm="ngForm" (ngSubmit)="sendForm()">
+    <div class="form-group">
+        <label> From: </label>
+        <input appHighlight class="form-control" type="text" required [(ngModel)]="email.from" name="efrom" #efrom="ngModel"
+            [ngClass]="efrom.valid || efrom.pristine ? '': 'bg-danger'"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+        <div class="alert alert-danger" *ngIf="efrom.touched && !efrom.valid">
+            <div *ngIf="efrom.errors?.['required']">Email is required.</div>
+            <div *ngIf="efrom.errors?.['pattern']">Email does not match the required pattern.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label> To: </label>
+        <input appHighlight class="form-control" type="text" required [(ngModel)]="email.to" name="eto" #eto="ngModel"
+            [ngClass]="eto.valid || eto.pristine ? '': 'bg-danger'"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+        <div class="alert alert-danger" *ngIf="eto.touched && !eto.valid">
+            <div *ngIf="eto.errors?.['required']">Email is required.</div>
+            <div *ngIf="eto.errors?.['pattern']">Email does not match the required pattern.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label> Subject: </label>
+        <input appHighlight class="form-control" type="text" required minlength="10" maxlength="50" [(ngModel)]="email.subject" name="esubject" #esubject="ngModel"
+            [ngClass]="esubject.valid || esubject.pristine ? '': 'bg-danger'">
+
+        <div class="alert alert-danger" *ngIf="esubject.touched && !esubject.valid">
+            <div *ngIf="esubject.errors?.['required']">Subject is required.</div>
+            <div *ngIf="esubject.errors?.['minlength']">Subject is too short.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label> Body: </label>
+        <input appHighlight class="form-control" type="text" required minlength="10" [(ngModel)]="email.body" name="ebody" #ebody="ngModel"
+            [ngClass]="ebody.valid || ebody.pristine ? '': 'bg-danger'">
+        
+        <div class="alert alert-danger" *ngIf="ebody.touched && !ebody.valid">
+            <div *ngIf="ebody.errors?.['required']">Body is required.</div>
+            <div *ngIf="ebody.errors?.['minlength']">Body is too short.</div>
+        </div>
+    </div>
+
+    <div class="text-right">
+        <button class="btn btn-primary btn-sm mr-1" type="submit" [disabled]="!emailForm.form.valid">Send</button>&nbsp;
+        <button class="btn btn-primary btn-sm mr-1" type="button" (click)="cleanForm()">Reset</button>
+
+    </div>
+
+</form>
+
+<h3> Form data: </h3>
+
+<br>
+<p >
+    From: {{ email.from }} <br>
+    To: {{ email.to }} <br>
+    Subject: {{ email.subject }} <br>
+    Body: {{ email.body }}
+</p>
+
+<div>
+    <h3>List of sent E-Mails</h3>
+    <div *ngIf="emailList.length !==0; else elseBlock">
+        <table class="email-reader_table">
+            <tr class="email-reader_table-row row-weight">
+                <td>From:</td>
+                <td>To:</td>
+                <td>Subject:</td>
+                <td>Message:</td>
+            </tr>
+            <tr class="email-reader_table-row" *ngFor="let email of emailList">
+                <td>{{ email.from }}</td>
+                <td>{{ email.to }}</td>
+                <td>{{ email.subject }}</td>
+                <td>{{ email.body }}</td>
+            </tr>
+        </table>
+    </div>
+        <ng-template #elseBlock>The list of emails is empty.</ng-template>
+</div>
