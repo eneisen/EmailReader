@@ -26,7 +26,7 @@ export class EmailsService {
     this.emailsList.forEach(email => {
       if (email.id > max) {
         max = email.id;
-      }
+      } 
     });
     return max + 1;
   }

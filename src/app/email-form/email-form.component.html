@@ -1,4 +1,4 @@
-<h1> EmailReader </h1>
+<h1> Email Form </h1>
 
 <form #emailForm="ngForm" (ngSubmit)="sendForm()">
     <div class="form-group">
@@ -46,49 +46,4 @@
     </div>
 
 </form>
-
-<h4> Form data: </h4>
-
-<br>
-<p >
-    ID: {{ email.id }} <br>
-    From: {{ email.from }} <br>
-    To: {{ email.to }} <br>
-    Subject: {{ email.subject }} <br>
-    Body: {{ email.body }}
-</p>
-
-<h4> List of emails: </h4>
-
-<h5> Filter emails: </h5>
-
-Text: <input type="text" class="form-control" [(ngModel)]="term">
-Only with body: <input type="checkbox" [(ngModel)]="withBody">
-<br>
-<br>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">From</th>
-            <th scope="col">To</th>
-            <th scope="col">Subject</th>
-            <th scope="col">Body</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let email of emailsList | filter:term | withBodyFilter:withBody">
-            <td class="table-cell">{{email.id}}</td>
-            <td class="table-cell">{{email.from}}</td>
-            <td class="table-cell">{{email.to}}</td>
-            <td class="table-cell">{{email.subject}}</td>
-            <td class="table-cell">{{email.body}}</td>
-            <td>
-            <div class="text-right">
-                <button (click)="remove(email.id)" class="btn btn-primary btn-sm mr-1">Remove</button>
-            </div>
-        </tr>
-    </tbody>
-</table>
-
+<a routerLink="/emailslist"> Go Back</a>
